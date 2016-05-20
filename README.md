@@ -9,7 +9,7 @@ using a set of common tools that works well together. It provides a clear and
 concise way to define routers / controllers and a simple React based view
 engine.
 
-## Featutes
+## Features
 
 - Simple and concise Routers / Controllers
 - React Based view engine
