@@ -10,7 +10,10 @@
   "dependencies": {
     "classy-router": "0.0.3",
     "finalhandler": "^0.4.1",
+    "mime": "^1.3.4",
     "path-to-regexp": "^1.3.0",
+    "tilt-react-views": "github:mklabs/tilt-react-views",
+    "tilt-router": "github:mklabs/tilt-router",
     "views-react": "github:mklabs/views-react"
   },
   "devDependencies": {
@@ -19,14 +22,15 @@
     "babel-preset-es2015": "^6.9.0",
     "mocha": "^2.4.5",
     "nodemon": "^1.9.2",
+    "supertest": "^1.2.0",
     "watchd": "github:mklabs/watchd"
   },
   "scripts": {
-    "test": "DEBUG=tilt* mocha -R spec",
+    "test": "DEBUG=tilt* mocha -R spec --timeout 0",
     "start": "DEBUG=tilt* nodemon examples/vertical/index.js",
     "prestart": "npm run babel",
     "babel": "babel lib/ -d src",
-    "watch": "DEBUG='tilt* watchd*' watchd lib/* examples/**.js test/**.js -c 'npm run babel' -c 'npm test'"
+    "watch": "DEBUG='tilt* watchd*' watchd lib/* examples/vertical/app/*/*.js test/**.js -c 'npm run babel' -c 'npm test'"
   },
   "repository": {
     "type": "git",

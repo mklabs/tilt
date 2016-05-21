@@ -9,10 +9,8 @@ class Router extends TiltRouter {
   }
 
   index(req, res) {
-    console.log('Incoming request:', req.url);
     return res.render('index', { name: 'Title!' });
   }
 }
-
 
 module.exports = Router;
