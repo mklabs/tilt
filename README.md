@@ -1,5 +1,7 @@
 # tilt
 
+> wip
+
 Minimalist, ES6 based, developer-friendly web framework for node.
 
 Inspired by Play Framework and Sails / Trails.
@@ -8,6 +10,19 @@ It offers a lightweight framework to quickly develop new nodejs application
 using a set of common tools that works well together. It provides a clear and
 concise way to define routers / controllers and a simple React based view
 engine.
+
+## 🐰  Development documentation
+
+
+    git clone https://github.com/mklabs/tilt.git
+    cd tilt
+    npm run watch &
+    npm run start
+
+- `npm run start` to start the server. I'll run babel once before.
+- `npm run watch` will recompile and relaunch the tests.
+
+The lib/ folder is where sources are, the src/ folder are where generated sources are.
 
 ## Features
 
