@@ -19,7 +19,7 @@ engine.
     npm run watch &
     npm run start
 
-- `npm run start` to start the server. I'll run babel once before.
+- `npm run start` to start the server. It'll run babel once before.
 - `npm run watch` will recompile and relaunch the tests.
 
 The lib/ folder is where sources are, the src/ folder are where generated sources are.
