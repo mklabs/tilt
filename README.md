@@ -28,6 +28,9 @@ The lib/ folder is where sources are, the src/ folder are where generated source
 
 - Simple and concise Routers / Controllers
 - React Based view engine
+
+> wip
+
 - Vertical or horizontal architecture (http://www.slideshare.net/ChristianHujer/vertical-vs-horizontal-software-architecture-ruby-conf-india-2016-59817161)
 - Models ORM using either Mongoose or Sequelize
 - Simple Dependency Injection using angular/di.js and ES7 annotations.
