@@ -65,7 +65,7 @@ describe('Tilt', () => {
       request(this.app.server)
         .get('/')
         .expect('Content-Type', 'text/html')
-        .expect(/Hello Title/)
+        .expect(/Hello Bob/)
         .end(done);
     });
 

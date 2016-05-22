@@ -9,7 +9,7 @@ class HomeController extends Controller {
   }
 
   index(req, res) {
-    return res.render('index', { name: 'Title!' });
+    return res.render('index', { name: 'Bob!' });
   }
 }
 
