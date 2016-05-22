@@ -41,6 +41,8 @@ var tilt = require('tilt');
 var app = tilt()
   // Controller glob patterns (default: 'app/controllers/*')
   .controllers('app/controllers/*')
+  // Same for models (default: 'app/models/*')
+  .models('app/models/*')
   // Views directory glob pattern (default: 'app/views/', must end with a "/")
   .views('app/views/')
   // Init tilt and start the server (default: http://localhost:3000)
@@ -98,6 +100,52 @@ var HelloMessage = React.createClass({
 module.exports = HelloMessage;
 ```
 
+**app/models/user.js**
+
+Models inherits from `tilt.Model` to provide a thin abstraction on top of
+[Sequelize](http://docs.sequelizejs.com/en/latest/).
+
+Both attributes and options getters maps the `sequelize.define('name',
+{attributes}, {options})`a equivalent.
+
+- `attributes` Specifiy the Model schema ([Model Definition](http://docs.sequelizejs.com/en/latest/docs/models-definition/))
+- `options` Specifiy the Model options
+
+Most of [Sequelize Model API](http://docs.sequelizejs.com/en/latest/api/model/) is available on `tilt.Model` instances.
+
+```js
+var tilt = require('tilt');
+
+class User extends tilt.Model {
+  get attributes() {
+    return {
+      username: tilt.Sequelize.STRING,
+      birthday: tilt.Sequelize.DATE
+    };
+  }
+
+  get options() {}
+}
+
+module.exports = User;
+```
+
+Then used like so:
+
+```js
+create(req, res, next) {
+  var user = new User({
+    username: 'foobar',
+    birthday: new Date()
+  }, this.db);
+
+  user.save()
+    .catch(next)
+    .then(() => {
+      res.end('User saved');
+    });
+}
+```
 
 ## Tests
 
