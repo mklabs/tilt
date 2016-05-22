@@ -26,11 +26,12 @@
     "watchd": "github:mklabs/watchd"
   },
   "scripts": {
-    "test": "DEBUG=tilt* mocha -R spec --timeout 0",
-    "start": "DEBUG=tilt* nodemon examples/vertical/index.js",
+    "test": "DEBUG='tilt tilt:*' mocha -R spec --grep mod",
+    "start": "DEBUG='tilt tilt:*' nodemon examples/vertical/index.js",
+    "start-horizontal": "DEBUG='tilt tilt:*' nodemon examples/horizontal/index.js",
     "prestart": "npm run babel",
     "babel": "babel lib/ -d src",
-    "watch": "DEBUG='tilt* watchd*' watchd lib/* examples/vertical/app/*/*.js test/**.js -c 'npm run babel' -c 'npm test'"
+    "watch": "DEBUG='tilt tilt:* watchd*' watchd lib/* examples/vertical/app/*/*.js test/**.js -c 'npm run babel' -c 'npm test'"
   },
   "repository": {
     "type": "git",

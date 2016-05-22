@@ -1,7 +1,7 @@
 
-var TiltRouter = require('../../../lib/router');
+var Controller = require('../../../../..').Controller;
 
-class Router extends TiltRouter {
+class HomeController extends Controller {
   get routes() {
     return {
       '/': 'index'
@@ -9,10 +9,9 @@ class Router extends TiltRouter {
   }
 
   index(req, res) {
-    console.log('Incoming request:', req.url);
     return res.render('index', { name: 'Title!' });
   }
 }
 
 
-module.exports = Router;
+module.exports = HomeController;

@@ -13,7 +13,6 @@ describe('Tilt', () => {
   });
 
   describe('HTTP server', () => {
-
     before(() => {
       this.app = tilt()
         .controllers('examples/vertical/app/controllers/*')
@@ -43,4 +42,45 @@ describe('Tilt', () => {
         .end(done);
     });
   });
+
+
+  describe('HTTP server with module based architecture', () => {
+    before(() => {
+      this.app = tilt()
+        .controllers('examples/horizontal/app/*/controllers/*')
+        .views('examples/horizontal/app/*/views/')
+        .init();
+    });
+
+    it('Renders 404 html', (done) => {
+      request(this.app.server)
+        .get('/blah')
+        .expect('Content-Type', 'text/html')
+        .expect(404)
+        .end(done);
+    });
+
+    it('Renders homepage', (done) => {
+      request(this.app.server)
+        .get('/')
+        .expect('Content-Type', 'text/html')
+        .expect(/Hello Title/)
+        .end(done);
+    });
+
+    it('Renders /profile', (done) => {
+      request(this.app.server)
+        .get('/profile')
+        .expect(/Response from profile module/)
+        .end(done);
+    });
+
+    it('Renders /profile/template', (done) => {
+      request(this.app.server)
+        .get('/profile/template')
+        .expect(/Response from profile module using a React view/)
+        .end(done);
+    });
+  });
+
 });
