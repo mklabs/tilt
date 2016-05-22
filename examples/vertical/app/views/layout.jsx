@@ -8,6 +8,7 @@ module.exports = React.createClass({
           <title>{this.props.title}</title>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css" />
+          <link rel="stylesheet" href="/main.css" />
         </head>
         <body>
 
@@ -19,12 +20,12 @@ module.exports = React.createClass({
                   <span className="mdl-layout-title">Material Design Lite</span>
                   <div className="mdl-layout-spacer"></div>
                   <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                    <label className="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <label className="mdl-button mdl-js-button mdl-button--icon" htmlFor="search">
                       <i className="material-icons">search</i>
                     </label>
                     <div className="mdl-textfield__expandable-holder">
                       <input className="mdl-textfield__input" type="text" id="search" />
-                      <label className="mdl-textfield__label" for="search">Enter your query...</label>
+                      <label className="mdl-textfield__label" htmlFor="search">Enter your query...</label>
                     </div>
                   </div>
                 </div>

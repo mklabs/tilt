@@ -14,7 +14,10 @@ tilt.controllers(path.join(__dirname, 'app/controllers/*'));
 tilt.views(path.join(__dirname, 'app/views/'));
 
 // Same for models
-tilt.models('app/models/*');
+tilt.models(path.join(__dirname, 'app/models/*'));
+
+// Static / public directories (pattern must end with a "/")
+tilt.static(path.join(__dirname, 'app/public/'));
 
 tilt.start(function(err) {
   if (err) throw err;
