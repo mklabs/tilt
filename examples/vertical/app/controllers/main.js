@@ -7,7 +7,7 @@ class Router extends Controller {
   get routes() {
     return {
       '/':            'index',
-      '/test':        'test',
+      '/list':        'list',
       '/create':      'create',
       'POST /create': 'createPost',
     };
@@ -26,23 +26,28 @@ class Router extends Controller {
     return res.render('index', { name: 'Title!' });
   }
 
-  test(req, res) {
-    this.user.save().then(() => {
-      this.user.find({ where: { username: 'John Doe' } }).then((user) => {
-        if (!user) return res.end('No data');
-        return res.end('test:' +  JSON.stringify(user.dataValues));
-      });
+  list(req, res) {
+    this.user.findAll().then((users) => {
+      debug('Users %d', users.length);
+      res.render('list', { users });
     });
   }
 
-  create(req, res) {
+  create(req, res, next) {
     res.render('create');
   }
 
   // Will probably have to parse req.body
-  createPost(req, res) {
+  createPost(req, res, next) {
     debug('POST create', req.body);
-    res.end('post');
+
+    var user = new User(req.body, this.db);
+
+    user.save()
+      .catch(next)
+      .then(() => {
+        res.redirect('/list');
+      });
   }
 }
 
