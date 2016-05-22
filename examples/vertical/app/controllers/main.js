@@ -6,8 +6,10 @@ var User = require('../models/user');
 class Router extends Controller {
   get routes() {
     return {
-      '/':      'index',
-      '/test':  'test',
+      '/':            'index',
+      '/test':        'test',
+      '/create':      'create',
+      'POST /create': 'createPost',
     };
   }
 
@@ -31,6 +33,16 @@ class Router extends Controller {
         return res.end('test:' +  JSON.stringify(user.dataValues));
       });
     });
+  }
+
+  create(req, res) {
+    res.render('create');
+  }
+
+  // Will probably have to parse req.body
+  createPost(req, res) {
+    debug('POST create', req.body);
+    res.end('post');
   }
 }
 
