@@ -10,10 +10,10 @@ var tilt = require('../..')();
 tilt.controllers(path.join(__dirname, 'app/*/controllers/*'));
 
 // Same for models
-tilt.models('app/models/*');
+tilt.models(path.join(__dirname, 'app/models/*'));
 
 // Same for views, except we register a list of directories instead (pattern ends with `/`)
-tilt.views('app/*/views/');
+tilt.views(path.join(__dirname, 'app/*/views/'));
 
 tilt.start(function(err) {
   if (err) throw err;

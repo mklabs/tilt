@@ -10,6 +10,9 @@ var tilt = require('../..')();
 // Setting up controllers glob, default: app/controllers/*
 tilt.controllers(path.join(__dirname, 'app/controllers/*'));
 
+// Views
+tilt.views(path.join(__dirname, 'app/views/'));
+
 // Same for models
 tilt.models('app/models/*');
 
