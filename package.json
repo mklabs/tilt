@@ -13,8 +13,7 @@
     "mime": "^1.3.4",
     "path-to-regexp": "^1.3.0",
     "tilt-react-views": "github:mklabs/tilt-react-views",
-    "tilt-router": "github:mklabs/tilt-router",
-    "views-react": "github:mklabs/views-react"
+    "tilt-router": "github:mklabs/tilt-router"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
