@@ -19,6 +19,9 @@ tilt.models(path.join(__dirname, 'app/models/*'));
 // Static / public directories (pattern must end with a "/")
 tilt.static(path.join(__dirname, 'app/public/'));
 
+// Assets directories
+tilt.assets(path.join(__dirname, 'app/assets/'));
+
 tilt.start(function(err) {
   if (err) throw err;
   console.log('Server started');
