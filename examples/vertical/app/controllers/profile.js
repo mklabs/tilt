@@ -1,7 +1,7 @@
 
-var TiltRouter = require('../../../../lib/router');
+var Controller = require('../../../..').Controller;
 
-class Home extends TiltRouter {
+class Home extends Controller {
   get routes() {
     return {
       '/home': 'index'
