@@ -16,6 +16,7 @@ describe('Tilt', () => {
     before(() => {
       this.app = tilt()
         .controllers('examples/vertical/app/controllers/*')
+        .views('examples/vertical/app/views/')
         .init();
     });
 
