@@ -1,4 +1,4 @@
-# tilt
+# tilt [![Build Status](https://secure.travis-ci.org/mklabs/tilt.png)](http://travis-ci.org/mklabs/tilt)
 
 > wip
 
