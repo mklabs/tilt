@@ -30,7 +30,8 @@
     "start-horizontal": "DEBUG='tilt tilt:*' nodemon examples/horizontal/index.js",
     "prestart": "npm run babel",
     "babel": "babel lib/ -d src",
-    "watch": "DEBUG='tilt tilt:* watchd*' watchd lib/* examples/vertical/app/*/*.js test/**.js -c 'npm run babel' -c 'npm test'"
+    "watch": "DEBUG='tilt tilt:* watchd*' watchd lib/* examples/vertical/app/*/*.js test/**.js -c 'npm run babel' -c 'npm test'",
+    "docs": "mocha -R markdown >> README.md"
   },
   "repository": {
     "type": "git",

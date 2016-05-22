@@ -24,14 +24,79 @@ engine.
 
 The lib/ folder is where sources are, the src/ folder are where generated sources are.
 
+## Example
+
+```js
+var tilt = require('tilt');
+
+var app = tilt()
+  // Controller glob patterns (default: 'app/controllers/*')
+  .controllers('app/controllers/*')
+  // Views directory glob pattern (default: 'app/views/', must end with a "/")
+  .views('app/views/')
+  // Init tilt and start the server (default: http://localhost:3000)
+  .start(function() {
+    console.log('Server started');
+  });
+```
+
+**app/controllers/main.js**
+
+Controllers (or Routers) are standard ES6 Class that inherits from `tilt.Controller`.
+
+They implement a `routes` hash that defines the mapping between URLs pattern
+and class methods / request handlers.
+
+`req` and `res` are standard node HTTP request and response, with
+`res.render(filename, { ... })` being added to provide a basic React rendering
+engine.
+
+React JSX views are automatically transpiled by Babel when the framework requires them.
+
+See [tilt-router](https://github.com/mklabs/tilt-router) for more information.
+
+```js
+var Controller = require('tilt').Controller;
+
+class Router extends Controller {
+  get routes() {
+    return {
+      '/': 'index'
+    };
+  }
+
+  index(req, res) {
+    return res.render('index', { name: 'Title!' });
+  }
+}
+
+module.exports = Router;
+```
+
+**app/views/index.jsx**
+
+See [tilt-react-views](https://github.com/mklabs/tilt-react-views) for more information.
+
+```js
+var React = require('react');
+
+var HelloMessage = React.createClass({
+  render: function() {
+    return (<div>Hello {this.props.name}</div>);
+  }
+});
+
+module.exports = HelloMessage;
+```
+
 ## Features
 
 - Simple and concise Routers / Controllers
 - React Based view engine
+- Vertical or horizontal architecture (http://www.slideshare.net/ChristianHujer/vertical-vs-horizontal-software-architecture-ruby-conf-india-2016-59817161)
 
 > wip
 
-- Vertical or horizontal architecture (http://www.slideshare.net/ChristianHujer/vertical-vs-horizontal-software-architecture-ruby-conf-india-2016-59817161)
 - Models ORM using either Mongoose or Sequelize
 - Simple Dependency Injection using angular/di.js and ES7 annotations.
 - Developer friendly
@@ -45,15 +110,113 @@ The lib/ folder is where sources are, the src/ folder are where generated source
     behavior is really easy. Enzyme provides helpers to test your React views.
   - Yeoman generators and templates to quickly scafold an entire app, or individual entities.
 
+## Tests
 
-## Tools
+    npm test
 
-tilt builds on the following tools
+- [Tilt](#tilt)
+ - [HTTP server](#tilt-http-server)
+ - [HTTP server with module based architecture](#tilt-http-server-with-module-based-architecture)
 
-- nodemon
-- react
-- angular/di
-- babel
-- eslint
-- supertest
-- enzyme
+<a name="tilt"></a>
+### Tilt
+Returns the list of controllers.
+
+```js
+var app = new tilt.Tilt();
+app.controllers('examples/vertical/app/controllers/*');
+var controllers = app.loadControllers();
+assert.ok(controllers.length);
+```
+
+<a name="tilt-http-server"></a>
+#### HTTP server
+
+```js
+before(() => {
+  this.app = tilt()
+    .controllers('examples/vertical/app/controllers/*')
+    .views('examples/vertical/app/views/')
+    .init();
+});
+```
+
+Renders 404 html.
+
+```js
+request(this.app.server)
+  .get('/blah')
+  .expect('Content-Type', 'text/html')
+  .expect(404)
+  .end(done);
+```
+
+Renders homepage.
+
+```js
+request(this.app.server)
+  .get('/')
+  .expect('Content-Type', 'text/html')
+  .expect(/Hello Title/)
+  .end(done);
+```
+
+Renders /home.
+
+```js
+request(this.app.server)
+  .get('/home')
+  .expect(/Response from/)
+  .end(done);
+```
+
+<a name="tilt-http-server-with-module-based-architecture"></a>
+#### HTTP server with module based architecture
+
+```js
+before(() => {
+  this.app = tilt()
+    .controllers('examples/horizontal/app/*/controllers/*')
+    .views('examples/horizontal/app/*/views/')
+    .init();
+});
+```
+
+Renders 404 html.
+
+```js
+request(this.app.server)
+  .get('/blah')
+  .expect('Content-Type', 'text/html')
+  .expect(404)
+  .end(done);
+```
+
+Renders homepage.
+
+```js
+request(this.app.server)
+  .get('/')
+  .expect('Content-Type', 'text/html')
+  .expect(/Hello Title/)
+  .end(done);
+```
+
+Renders /profile.
+
+```js
+request(this.app.server)
+  .get('/profile')
+  .expect(/Response from profile module/)
+  .end(done);
+```
+
+Renders /profile/template.
+
+```js
+request(this.app.server)
+  .get('/profile/template')
+  .expect(/Response from profile module using a React view/)
+  .end(done);
+```
+
