@@ -8,22 +8,16 @@
     "example": "examples"
   },
   "dependencies": {
-    "babel-preset-es2015": "^6.9.0",
-    "babelify": "^7.3.0",
     "body": "^5.1.0",
-    "browserify": "^13.0.1",
     "finalhandler": "^0.4.1",
     "mime": "^1.3.4",
     "mysql": "^2.10.2",
     "path-to-regexp": "^1.3.0",
-    "postcss": "^5.0.21",
-    "postcss-scss": "^0.1.8",
-    "precss": "^1.4.0",
     "sequelize": "^3.23.2",
     "serve-static": "^1.10.2",
+    "tilt-assets": "github:mklabs/tilt-assets",
     "tilt-react-views": "github:mklabs/tilt-react-views",
-    "tilt-router": "github:mklabs/tilt-router",
-    "watchify": "^3.7.0"
+    "tilt-router": "github:mklabs/tilt-router"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
@@ -35,7 +29,7 @@
     "watchd": "github:mklabs/watchd"
   },
   "scripts": {
-    "test": "DEBUG='tilt tilt:*' mocha -R spec --grep Model",
+    "test": "DEBUG='tilt tilt:*' mocha -R spec",
     "start": "DEBUG='tilt tilt* *' nodemon examples/vertical/index.js",
     "start-horizontal": "DEBUG='tilt tilt:*' nodemon examples/horizontal/index.js",
     "prestart": "npm run babel",
