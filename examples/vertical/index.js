@@ -1,28 +1,29 @@
-
-// Trying to set up here the API I'd like to have
-//
-// Really similar to express
-
 var path = require('path');
+var tilt = require('../..');
 
-var tilt = require('../..')();
+var app = tilt();
 
-// Setting up controllers glob, default: app/controllers/*
-tilt.controllers(path.join(__dirname, 'app/controllers/*'));
+app
+  // Setting up controllers glob, default: app/controllers/*
+  .controllers(path.join(__dirname, 'app/controllers/*'))
 
-// Views
-tilt.views(path.join(__dirname, 'app/views/'));
+  // Views
+  .views(path.join(__dirname, 'app/views/'))
 
-// Same for models
-tilt.models(path.join(__dirname, 'app/models/*'));
+  // Same for models
+  .models(path.join(__dirname, 'app/models/*'))
 
-// Static / public directories (pattern must end with a "/")
-tilt.static(path.join(__dirname, 'app/public/'));
+  // Static / public directories (pattern must end with a "/")
+  .static(path.join(__dirname, 'app/public/'))
 
-// Assets directories
-tilt.assets(path.join(__dirname, 'app/assets/'));
+  // Assets directories
+  .assets(path.join(__dirname, 'app/assets/'))
 
-tilt.start(function(err) {
+  // Custom middlewares
+  .use(require('morgan')('dev'));
+
+// Start the server
+app.start(function(err) {
   if (err) throw err;
   console.log('Server started');
 });
