@@ -31,7 +31,7 @@
     "watchd": "github:mklabs/watchd"
   },
   "scripts": {
-    "test": "DEBUG='tilt tilt:*' mocha -R spec",
+    "test": "mocha -R spec",
     "start": "DEBUG='tilt tilt*' nodemon examples/vertical/index.js",
     "start-horizontal": "DEBUG='tilt tilt:*' nodemon examples/horizontal/index.js",
     "prestart": "npm run babel",

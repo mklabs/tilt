@@ -4,20 +4,6 @@ var request = require('supertest');
 
 describe('Tilt', () => {
 
-  it.skip('Returns the list of controllers', (done) => {
-    var app = new tilt.Tilt();
-    app.controllers('examples/vertical/app/controllers/*');
-
-    app.initDb()
-      .then(app.init.bind(app))
-      .then(app.syncDb.bind(app))
-      .then(() => {
-        var controllers = app.loadControllers();
-        assert.ok(controllers.length);
-        done();
-      });
-  });
-
   describe('HTTP server', () => {
     before((done) => {
       var app = this.app = tilt();
@@ -25,13 +11,8 @@ describe('Tilt', () => {
       app
         .controllers('examples/vertical/app/controllers/*')
         .views('examples/vertical/app/views/')
-        .initDb()
-        .then(app.init.bind(app))
-        .then(app.syncDb.bind(app))
-        .then(() => {
-          console.log('done');
-          done();
-        });
+        .init()
+        .then(done.bind(null, null));
     });
 
     it('Renders 404 html', (done) => {
@@ -59,19 +40,14 @@ describe('Tilt', () => {
   });
 
   describe('HTTP server with module based architecture', () => {
-    before(() => {
+    before((done) => {
       var app = this.app = tilt();
 
       app
         .controllers('examples/horizontal/app/*/controllers/*')
         .views('examples/horizontal/app/*/views/')
-        .initDb()
-        .then(app.init.bind(app))
-        .then(app.syncDb.bind(app))
-        .then(() => {
-          console.log('done');
-          done();
-        });
+        .init()
+        .then(done.bind(null, null));
     });
 
     it('Renders 404 html', (done) => {

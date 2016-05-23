@@ -2,7 +2,7 @@ var tilt    = require('..');
 var assert  = require('assert');
 var request = require('supertest');
 
-describe('Tilt', () => {
+describe('Assets', () => {
   describe('HTTP /assets/', () => {
     before((done) => {
       var app = this.app = tilt();
@@ -10,35 +10,26 @@ describe('Tilt', () => {
       app
         .controllers('examples/vertical/app/controllers/*')
         .views('examples/vertical/app/views/')
-        .initDb()
-        .then(app.init.bind(app))
-        .then(app.syncDb.bind(app))
-        .then(() => {
-          console.log('done');
-          done();
-        });
+        .assets('examples/vertical/app/assets/')
+        .init()
+        .then(done.bind(null, null));
     });
 
-    it('Renders 404 html', (done) => {
+    it('Renders /assets/main.js', (done) => {
       request(this.app.server)
-        .get('/blah')
-        .expect('Content-Type', 'text/html')
-        .expect(404)
+        .get('/assets/main.js')
+        .expect('Content-Type', 'application/javascript')
+        .expect(/classCallCheck/)
+        .expect(/return App/)
         .end(done);
     });
 
-    it('Renders homepage', (done) => {
+    it('Renders /assets/main.css', (done) => {
       request(this.app.server)
-        .get('/')
-        .expect('Content-Type', 'text/html')
-        .expect(/Bonjour Title/)
-        .end(done);
-    });
-
-    it('Renders /home', (done) => {
-      request(this.app.server)
-        .get('/home')
-        .expect(/Response from/)
+        .get('/assets/main.css')
+        .expect('Content-Type', 'text/css')
+        .expect(/display: flex/)
+        .expect(/display: -webkit-box/)
         .end(done);
     });
   });

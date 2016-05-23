@@ -4,19 +4,26 @@
 
 Minimalist, ES6 based, developer-friendly web framework for node.
 
-Inspired by Play Framework and Sails / Trails.
+Inspired by Play Framework and Sails / Trails, Tilt aims to be a lightweight
+framework to quickly develop new nodejs application using a set of common tools
+that works well together.
 
-Tilt aims to be a lightweight framework to quickly develop new nodejs application
-using a set of common tools that works well together.
+* **Routers / Controllers**
+  [tilt-router](https://github.com/mklabs/tilt-router) Standard ES6 Class
+  defines the mapping between URLs pattern and request handlers
+* **Views** [tilt-react-views](https://github.com/mklabs/tilt-react-views) Views are built using React Components through `res.render()` method
+* **Models** Models are ES6 Class that extends `tilt.Model` to offer a thin
+  abstraction on top of [Sequelize](http://docs.sequelizejs.com/en/latest/).
+* **Modular architecture** [Glob](https://github.com/isaacs/node-glob) patterns
+  are used to load Controllers, Models and configure directories. Supports
+  multiple Views, assets and static directories allowing any kind of file
+  structure.
+* **Asset pipeline** [tilt-assets](https://github.com/mklabs/tilt-assets)
+  implements a basic Asset pipeline for any `/assets/*.{js,css}` URLs. JS files
+  are compiled down to ES6 using Browserify with Babelify transform. CSS files
+  are processed by PostCSS and autoprefixer plugin.
 
-It provides a clear and concise way to define routers / controllers on top of a
-simple React based view engine.
-
-## Features
-
-- Simple and concise Routers / Controllers
-- React Based view engine
-- Vertical or horizontal architecture (http://www.slideshare.net/ChristianHujer/vertical-vs-horizontal-software-architecture-ruby-conf-india-2016-59817161)
+## wip
 
 > wip: [todo](https://github.com/mklabs/tilt/issues/8)
 
@@ -25,10 +32,14 @@ simple React based view engine.
 
     git clone https://github.com/mklabs/tilt.git
     cd tilt
-    npm run watch &
-    npm run start
 
-- `npm run start` to start the server. It'll run babel once before.
+    # Run babel / test on source changes
+    npm run watch
+
+    # Start example app
+    npm start
+
+- `npm start` to start the server. It'll run babel once before and use nodemon to restart the server if needed.
 - `npm run watch` will recompile and relaunch the tests.
 
 The lib/ folder is where sources are, the src/ folder are where generated sources are.
@@ -36,20 +47,39 @@ The lib/ folder is where sources are, the src/ folder are where generated source
 ## Example
 
 ```js
+var path = require('path');
 var tilt = require('tilt');
 
-var app = tilt()
-  // Controller glob patterns (default: 'app/controllers/*')
-  .controllers('app/controllers/*')
-  // Same for models (default: 'app/models/*')
-  .models('app/models/*')
-  // Views directory glob pattern (default: 'app/views/', must end with a "/")
-  .views('app/views/')
-  // Init tilt and start the server (default: http://localhost:3000)
-  .start(function() {
+var app = tilt();
+
+app
+  // Controllers, default: app/controllers/*
+  .controllers(path.join(__dirname, 'app/controllers/*'))
+
+  // Same for models
+  .models(path.join(__dirname, 'app/models/*'))
+
+  // Views directories, default: app/views/ (must end with a "/")
+  .views(path.join(__dirname, 'app/views/'))
+
+
+  // Static / public directories, default: app/public/
+  .static(path.join(__dirname, 'app/public/'))
+
+  // Assets directories, default: disabled
+  .assets(path.join(__dirname, 'app/assets/'))
+
+  // Custom middlewares
+  .use(require('morgan')('dev'));
+
+  // Start the server
+  .start(function(err) {
+    if (err) throw err;
     console.log('Server started');
   });
 ```
+
+### Routers / Controllers
 
 **app/controllers/main.js**
 
@@ -58,13 +88,7 @@ Controllers (or Routers) are standard ES6 Class that inherits from `tilt.Control
 They implement a `routes` hash that defines the mapping between URLs pattern
 and class methods / request handlers.
 
-`req` and `res` are standard node HTTP request and response, with
-`res.render(filename, { ... })` being added to provide a basic React rendering
-engine.
-
-React JSX views are automatically transpiled by Babel when the framework requires them.
-
-See [tilt-router](https://github.com/mklabs/tilt-router) for more information.
+`req` and `res` are standard node HTTP request and response.
 
 ```js
 var Controller = require('tilt').Controller;
@@ -84,21 +108,29 @@ class Router extends Controller {
 module.exports = Router;
 ```
 
+### Views
+
 **app/views/index.jsx**
 
-See [tilt-react-views](https://github.com/mklabs/tilt-react-views) for more information.
+`res.render(filename, { ... })` is used to render React components and serve
+the resulting HTML.
+
+React JSX views are automatically transpiled by Babel when the framework
+requires them.
 
 ```js
-var React = require('react');
+import React from 'react';
 
-var HelloMessage = React.createClass({
-  render: function() {
+class HelloMessage extends React.Component {
+  render() {
     return (<div>Hello {this.props.name}</div>);
   }
-});
+}
 
 module.exports = HelloMessage;
 ```
+
+### Models
 
 **app/models/user.js**
 
@@ -106,7 +138,7 @@ Models inherits from `tilt.Model` to provide a thin abstraction on top of
 [Sequelize](http://docs.sequelizejs.com/en/latest/).
 
 Both attributes and options getters maps the `sequelize.define('name',
-{attributes}, {options})`a equivalent.
+{attributes}, {options})` equivalent.
 
 - `attributes` Specifiy the Model schema ([Model Definition](http://docs.sequelizejs.com/en/latest/docs/models-definition/))
 - `options` Specifiy the Model options
@@ -147,37 +179,19 @@ create(req, res, next) {
 }
 ```
 
-## Tests
-
-    npm test
-
+## API
 - [Tilt](#tilt)
- - [HTTP server](#tilt-http-server)
- - [HTTP server with module based architecture](#tilt-http-server-with-module-based-architecture)
+  - [HTTP server](#tilt-http-server)
+  - [HTTP server with module based architecture](#tilt-http-server-with-module-based-architecture)
+- [Assets](#assets)
+  - [HTTP /assets/](#assets-http-assets)
+- [tilt.Model](#tiltmodel)
+
 
 <a name="tilt"></a>
 ### Tilt
-Returns the list of controllers.
-
-```js
-var app = new tilt.Tilt();
-app.controllers('examples/vertical/app/controllers/*');
-var controllers = app.loadControllers();
-assert.ok(controllers.length);
-```
-
 <a name="tilt-http-server"></a>
 #### HTTP server
-
-```js
-before(() => {
-  this.app = tilt()
-    .controllers('examples/vertical/app/controllers/*')
-    .views('examples/vertical/app/views/')
-    .init();
-});
-```
-
 Renders 404 html.
 
 ```js
@@ -194,7 +208,7 @@ Renders homepage.
 request(this.app.server)
   .get('/')
   .expect('Content-Type', 'text/html')
-  .expect(/Hello Title/)
+  .expect(/Bonjour Title/)
   .end(done);
 ```
 
@@ -209,16 +223,6 @@ request(this.app.server)
 
 <a name="tilt-http-server-with-module-based-architecture"></a>
 #### HTTP server with module based architecture
-
-```js
-before(() => {
-  this.app = tilt()
-    .controllers('examples/horizontal/app/*/controllers/*')
-    .views('examples/horizontal/app/*/views/')
-    .init();
-});
-```
-
 Renders 404 html.
 
 ```js
@@ -235,7 +239,7 @@ Renders homepage.
 request(this.app.server)
   .get('/')
   .expect('Content-Type', 'text/html')
-  .expect(/Hello Title/)
+  .expect(/Hello Bob/)
   .end(done);
 ```
 
@@ -257,3 +261,52 @@ request(this.app.server)
   .end(done);
 ```
 
+<a name="assets"></a>
+### Assets
+<a name="assets-http-assets"></a>
+#### HTTP /assets/
+Renders /assets/main.js.
+
+```js
+request(this.app.server)
+  .get('/assets/main.js')
+  .expect('Content-Type', 'application/javascript')
+  .expect(/classCallCheck/)
+  .expect(/return App/)
+  .end(done);
+```
+
+Renders /assets/main.css.
+
+```js
+request(this.app.server)
+  .get('/assets/main.css')
+  .expect('Content-Type', 'text/css')
+  .expect(/display: flex/)
+  .expect(/display: -webkit-box/)
+  .end(done);
+```
+
+<a name="tiltmodel"></a>
+### tilt.Model
+Defines a sequelize instance.
+
+```js
+var User = class extends tilt.Model {
+  get attributes() {
+    return {
+      username: tilt.Sequelize.STRING,
+      birthday: tilt.Sequelize.DATE
+    };
+  }
+  get options() {}
+}
+var user = new User({
+  username: 'John Doe',
+  birthday: new Date()
+}, this.app.db);
+assert.ok(user.sequelize);
+// Sequelize API
+assert.equal(typeof user.find, 'function');
+assert.equal(typeof user.findById, 'function');
+``

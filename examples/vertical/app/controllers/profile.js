@@ -9,7 +9,6 @@ class Home extends Controller {
   }
 
   index(req, res) {
-    console.log('Incoming request:', req.url);
     return res.end('Response from home!');
   }
 }
