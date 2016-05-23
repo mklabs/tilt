@@ -1,6 +1,6 @@
 {
   "name": "tilt",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Minimalist, ES6 based, developer-friendly web framework for node.",
   "main": "index.js",
   "directories": {
