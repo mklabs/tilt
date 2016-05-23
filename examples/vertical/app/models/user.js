@@ -1,8 +1,8 @@
 
-var tilt = require('../../../..');
+import tilt from '../../../..';
 
 // Figuring out the API
-class User extends tilt.Model {
+export default class User extends tilt.Model {
   get attributes() {
     return {
       username: tilt.Sequelize.STRING,
@@ -12,5 +12,3 @@ class User extends tilt.Model {
 
   get options() {}
 }
-
-module.exports = User;

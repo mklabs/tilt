@@ -10,9 +10,6 @@ app
   // Views
   .views(path.join(__dirname, 'app/views/'))
 
-  // Same for models
-  .models(path.join(__dirname, 'app/models/*'))
-
   // Static / public directories (pattern must end with a "/")
   .static(path.join(__dirname, 'app/public/'))
 

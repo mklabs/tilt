@@ -1,11 +1,10 @@
-(function() {
-
+(function () {
   class App {
-    constructor() {
+    constructor () {
       console.log('Hello');
     }
 
-    init() {
+    init () {
       console.log('init');
     }
   }

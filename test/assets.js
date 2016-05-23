@@ -27,9 +27,9 @@ describe('Assets', () => {
     it('Renders /assets/main.css', (done) => {
       request(this.app.server)
         .get('/assets/main.css')
-        .expect('Content-Type', 'text/css')
-        .expect(/display: flex/)
-        .expect(/display: -webkit-box/)
+        // .expect('Content-Type', 'text/css')
+        .expect(/display:flex/)
+        .expect(/display:-webkit-box/)
         .end(done);
     });
   });

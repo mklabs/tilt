@@ -1,10 +1,10 @@
+const debug  = require('debug')('tilt:example:controller:main');
 
-var debug  = require('debug')('tilt:example:controller:main');
-var moment = require('moment');
-var User   = require('../models/user');
-var tilt   = require('../../../..');
+import moment from 'moment';
+import User from '../models/user';
+import { Inject, Controller } from '../../../..';
 
-class Router extends tilt.Controller {
+class MainController extends Controller {
   get routes() {
     return {
       '/':            'index',
@@ -14,28 +14,23 @@ class Router extends tilt.Controller {
     };
   }
 
-  constructor(db) {
-    super(db);
-    debug('Init main controller');
-    this.user = new User({
-      username: 'John Doe',
-      birthday: new Date()
-    }, this.db);
-  }
-
   index(req, res) {
     return res.render('index', { name: 'Title!' });
   }
 
   list(req, res) {
-    this.user.findAll().then((users) => {
+    var user = new User();
+
+    user.findAll().then((users) => {
       debug('Users %d', users.length);
+
       users = users.map(user => {
         var data = user.dataValues;
         data.createdAt = moment(data.createdAt).fromNow();
         data.updatedAt = moment(data.updatedAt).fromNow();
         return data;
       });
+
       res.render('list', { users });
     });
   }
@@ -58,4 +53,4 @@ class Router extends tilt.Controller {
   }
 }
 
-module.exports = Router;
+export default MainController;
