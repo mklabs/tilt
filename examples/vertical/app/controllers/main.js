@@ -1,9 +1,10 @@
 
-var debug = require('debug')('tilt:example:controller:main');
-var Controller = require('../../../..').Controller;
-var User = require('../models/user');
+var debug  = require('debug')('tilt:example:controller:main');
+var moment = require('moment');
+var User   = require('../models/user');
+var tilt   = require('../../../..');
 
-class Router extends Controller {
+class Router extends tilt.Controller {
   get routes() {
     return {
       '/':            'index',
@@ -29,6 +30,12 @@ class Router extends Controller {
   list(req, res) {
     this.user.findAll().then((users) => {
       debug('Users %d', users.length);
+      users = users.map(user => {
+        var data = user.dataValues;
+        data.createdAt = moment(data.createdAt).fromNow();
+        data.updatedAt = moment(data.updatedAt).fromNow();
+        return data;
+      });
       res.render('list', { users });
     });
   }
